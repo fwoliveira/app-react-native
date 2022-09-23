@@ -1,11 +1,39 @@
-import React from "react";
-import { Text, View, TextInput,TouchableOpacity } from 'react-native';
+import React,{useState} from "react";
+import { Alert, Text, View, TextInput,TouchableOpacity, ScrollView } from 'react-native';
 import{styles} from './style'
 import { Participant } from "../components/Participantes";
 export  function Home() {
+
+    // const participants=['Eu']
+    const[participants, setParticipants]= useState<string[]>([])
+    const [participantName, setParticipantName] = useState('')
+
     
     function handleParticipantAdd(){
-        console.log("voce clicou no botao +")
+      if(participants.includes("William")){
+        return Alert.alert ("participante existe","Ja existe um participante na lista com esse nome")
+      }
+      // participants.push('Ana');
+      // console.log(participants)
+      // setParticipants(['Ana']);
+      //['eu'] => ['Ana']
+      //prevState = conteudo atual do estado 
+      setParticipants(prevState =>[...prevState, participantName]);
+      //['Eu'] => ['Eu','Ana']
+      setParticipantName('');
+    
+    }
+    function handleParticipantRemove( name: string ){
+        Alert.alert("Remover",`Remover o participante ${name} ?`,[
+          {
+            text:'Sim',
+            onPress:() => Alert.alert("Deletado")
+          },
+          {
+            text:'Não',
+            style:'cancel'
+          }
+        ])
     }
 
     return (
@@ -18,6 +46,8 @@ export  function Home() {
       placeholder="Nome do participante"
       placeholderTextColor={'#6B6B6B'}
       //   keyboardType=""
+      onChangeText={setParticipantName}
+      value={participantName}
       />
       <TouchableOpacity style={styles.button}
       onPress={handleParticipantAdd}>
@@ -26,9 +56,14 @@ export  function Home() {
         </Text>
       </TouchableOpacity>
       </View>
-      <Participant name="William"/>
-      <Participant name="Oliveira"/>
-      <Participant name="Theo"/>
+      <ScrollView showsVerticalScrollIndicator={false} >
+      {
+      participants.map(participant =>(
+      <Participant name={participant} key={participant} onRemove={()=>handleParticipantRemove(participant)} />
+      ))
+     
+      }
+      </ScrollView>
     </View>
 
   );
