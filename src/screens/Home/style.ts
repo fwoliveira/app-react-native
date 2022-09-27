@@ -54,5 +54,21 @@ export const styles = StyleSheet.create({
         flexDirection:'row',
         marginTop:34
 
+     },
+     listEmptyText:{
+      color:'#fff',
+      fontSize:14,
+      textAlign:'center',
+
+
+     },
+     flatListPart:{
+      marginTop:20
+     },
+     title:{
+      color:'#fff',
+      fontSize:20,
+      marginTop:20,
+      fontFamily:'Roboto_700Bold'
      }
   });

@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import { Alert, Text, View, TextInput,TouchableOpacity, ScrollView } from 'react-native';
+import { Alert, Text, View, TextInput,TouchableOpacity, FlatList } from 'react-native';
 import{styles} from './style'
 import { Participant } from "../components/Participantes";
 export  function Home() {
@@ -27,7 +27,7 @@ export  function Home() {
         Alert.alert("Remover",`Remover o participante ${name} ?`,[
           {
             text:'Sim',
-            onPress:() => Alert.alert("Deletado")
+            onPress: () => setParticipants(prevState => prevState.filter(participant => participant !== name))
           },
           {
             text:'Não',
@@ -56,14 +56,24 @@ export  function Home() {
         </Text>
       </TouchableOpacity>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} >
-      {
-      participants.map(participant =>(
-      <Participant name={participant} key={participant} onRemove={()=>handleParticipantRemove(participant)} />
-      ))
-     
-      }
-      </ScrollView>
+      <Text style={styles.title}>Participantes</Text>
+      <FlatList
+        style={styles.flatListPart}
+        data={participants}
+        keyExtractor={(item)=> item}
+        renderItem={({item})=> (
+          <Participant name={item} key={item} onRemove={()=>handleParticipantRemove(item)} />
+          
+        )}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={() =>(
+          <Text style={styles.listEmptyText}>
+            Ninguém chegou no evento ainda?  {'\n'}
+            Adicione participantes a sua lista de presença.
+          </Text>
+        )}
+
+      />
     </View>
 
   );
